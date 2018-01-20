@@ -12,4 +12,10 @@
 - Independence of Error
 - Lack of Multicollinearity
 
+
+Mathematical Model :
+
+<b> y = b0 + b1x1 + b2x2 + ...... <b>
+
+
 # And here I was careful about <i>Dummy Trap<i>
