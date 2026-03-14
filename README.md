@@ -1,52 +1,71 @@
 # 📈 Multiple Linear Regression
 
-Predict startup profitability using Multiple Linear Regression with Backward Elimination — in Python and R.
+Predict startup profitability using Multiple Linear Regression with **Backward Elimination** — implemented in both Python and R.
+
+Uses the classic **50 Startups** dataset to model how R&D Spend, Administration costs, Marketing Spend, and State influence a company's Profit.
 
 ## What It Does
 
-Models how R&D Spend, Administration, Marketing Spend, and State influence a startup's Profit using the **50 Startups** dataset.
-
-1. Loads and preprocesses data (one-hot encodes categorical variables, avoids dummy variable trap)
-2. Splits into 80/20 train/test sets
+1. Loads and preprocesses the 50 Startups dataset (encodes categorical variables, avoids the dummy variable trap)
+2. Splits data into training (80%) and test (20%) sets
 3. Fits a Multiple Linear Regression model
-4. Performs **Backward Elimination** to identify the optimal predictor subset
+4. Performs **Backward Elimination** to find the optimal subset of predictors
 5. Evaluates predictions on the test set
+
+## Tech Stack
+
+| | Language | Libraries |
+|---|---|---|
+| 🐍 | Python | `numpy`, `pandas`, `matplotlib`, `scikit-learn`, `statsmodels` |
+| 📊 | R | `caTools` |
 
 ## Dataset
 
-`50_Startups.csv` — 50 records with columns: `R&D Spend`, `Administration`, `Marketing Spend`, `State`, and `Profit` (target).
+**`50_Startups.csv`** — 50 records of startup financial data.
+
+| Column | Description |
+|---|---|
+| R&D Spend | Research & development expenditure |
+| Administration | Administrative costs |
+| Marketing Spend | Marketing expenditure |
+| State | Location (New York, California, Florida) |
+| Profit | **Target variable** |
 
 ## How to Run
 
-### 🐍 Python
+### Python
 
 ```bash
 pip install numpy pandas matplotlib scikit-learn statsmodels
 python multiple_linear_regression.py
 ```
 
-### 📊 R
+### R
 
 ```r
-install.packages("caTools")  # first time only
+# Install dependency (first time only)
+install.packages("caTools")
+
+# Run
 source("multiple_linear_regression.R")
 ```
 
-> Both scripts expect `50_Startups.csv` in the working directory.
+> Make sure `50_Startups.csv` is in the same directory as the script.
 
-## Tech Stack
+## ⚠️ Known Issues (Deprecated APIs)
 
-| | Language | Libraries |
-|---|---|---|
-| 🐍 | Python 3 | `numpy` · `pandas` · `matplotlib` · `scikit-learn` · `statsmodels` |
-| 📊 | R | `caTools` |
+The Python script uses some APIs that have been deprecated/removed in newer versions of scikit-learn:
 
-## Known Issues
+- **`sklearn.cross_validation`** → replaced by `sklearn.model_selection` (since sklearn 0.20)
+- **`OneHotEncoder(categorical_features=...)`** → use `ColumnTransformer` + `OneHotEncoder` instead
+- **`statsmodels.formula.api.OLS`** → should use `statsmodels.api.OLS` for the non-formula interface
 
-- The Python script runs as a flat script (not modular/callable). OLS `.summary()` output is not printed — wrap in `print()` if you want to see it in a terminal.
-- No evaluation metrics (R², RMSE, etc.) are computed beyond raw predictions.
-- The R script encodes State as `1, 2, 3` factor levels, which may imply ordinality where none exists. This is acceptable for `lm()` with factor types but worth noting.
+To run as-is, pin `scikit-learn<0.20`. Otherwise, update the imports to modern equivalents.
 
 ## License
 
 [MIT](LICENSE) © 2018 Kaustabh Ganguly
+
+## Author
+
+**[Kaustabh Ganguly](https://github.com/stabgan)** ([@stabgan](https://github.com/stabgan))
